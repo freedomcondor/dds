@@ -2,7 +2,8 @@
 
 /////////////  function include  /////////////
 
-extern unsigned int targetLeftSpeed, targetRightSpeed;
+extern int16_t targetLeftSpeed, targetRightSpeed;
+extern float targetKp, targetKi, targetKd;
 
 ///////////////////  drawings /////////////////
 int drawSphere(double x, double y, double z, double r);

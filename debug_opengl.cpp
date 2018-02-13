@@ -102,6 +102,25 @@ int main(int argc, char* argv[])
 	targetLeftSpeed = 0;
 	targetRightSpeed = 0;
 
+	/*  for no belt
+	targetKp = 0.110;
+	targetKi = 0.159;
+	targetKd = 0.044;
+	*/
+
+	/*  on the ground
+	targetKp = 0.527;
+	targetKi = 0.625;
+	targetKd = 0.056;
+	*/
+
+	///*  on the ground
+	targetKp = 0.477;
+	targetKi = 0.625;
+	targetKd = 0.036;
+	//*/
+
+
 	function_init(SystemWeight,SystemHeight);
 	//
 
@@ -536,10 +555,10 @@ void BoardKeysOperate()
 		function_step();
 		KeyStates['n'] = 0;
 	}
-	if (KeyStates['p'] == 1)		
+	if (KeyStates['P'] == 1)		
 	{
 		PAUSE = 1 - PAUSE;
-		KeyStates['p'] = 0;
+		KeyStates['P'] = 0;
 	}
 	//if (key == 27)			// escape key
 	if (KeyStates[27] == 1)		
@@ -549,15 +568,60 @@ void BoardKeysOperate()
 	}
 
 	/////////////////////////////////////////
+	if (KeyStates['y'] == 1)		
+	{
+		if (targetLeftSpeed < 60)
+			targetLeftSpeed ++;
+	}
+	if (KeyStates['h'] == 1)		
+	{
+		if (targetLeftSpeed > -60)
+			targetLeftSpeed --;
+	}
+	if (KeyStates['u'] == 1)		
+	{
+		if (targetRightSpeed < 60)
+			targetRightSpeed ++;
+	}
 	if (KeyStates['j'] == 1)		
 	{
-		if (targetLeftSpeed < 30)
-			targetLeftSpeed += 1;
+		if (targetRightSpeed > -60)
+			targetRightSpeed --;
 	}
-	if (KeyStates['k'] == 1)		
+
+	float pidstep = 0.0050;
+	float pidlimit = 2;
+	if (KeyStates[';'] == 1)		
 	{
-		if (targetLeftSpeed > 0)
-			targetLeftSpeed -= 1;
+		if (targetKp > -pidlimit)
+			targetKp -= pidstep;
+	}
+	if (KeyStates['p'] == 1)		
+	{
+		if (targetKp < pidlimit)
+			targetKp += pidstep;
+	}
+
+	if (KeyStates['\''] == 1)		
+	{
+		if (targetKi > -pidlimit)
+			targetKi -= pidstep;
+	}
+	if (KeyStates['['] == 1)		
+	{
+		if (targetKi < pidlimit)
+			targetKi += pidstep;
+	}
+
+	if (KeyStates['\\'] == 1)		
+	{
+		if (targetKd > -pidlimit)
+			targetKd -= pidstep;
+	}
+	if (KeyStates[']'] == 1)		
+	{
+		if (targetKd < pidlimit)
+			targetKd += pidstep;
 	}
 }
 
